@@ -7,11 +7,11 @@ const form = document.querySelector(".form");
 form.addEventListener("submit", onCreatePromise);
 
 function onCreatePromise(event) {
-    event.preventDefault()
+    event.preventDefault();
     let delay = Number(form.elements.delay.value);
     const step = Number(form.elements.step.value);
     const amount = Number(form.elements.amount.value);
-  for (let i = 0; i<amount; i++){
+  for (let i = 1; i<=amount; i++){
       createPromise(i, delay)
         .then(({ i, delay }) => {
          Notify.success(`✅ Fulfilled promise ${i} in ${delay}ms`);
@@ -20,21 +20,22 @@ function onCreatePromise(event) {
           Notify.failure(`❌ Rejected promise ${i} in ${delay}ms`);
         })
         delay+=step;
-
+        event.currentTarget.reset();
   }
 }
+
+
 
 function createPromise(i, delay) {
  return new Promise ((res,rej) => {
   const shouldResolve = Math.random() > 0.3;
- setInterval(()=>{
+ setTimeout(()=>{
   if (shouldResolve) {
     res({i, delay})
   } else {
     rej({i, delay})
   }
- }, delay)
-
+ }, delay);
  })
 }
 
